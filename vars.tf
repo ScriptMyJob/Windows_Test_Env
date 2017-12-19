@@ -24,7 +24,7 @@ variable "ec2" {
     default = {
         lc_name     = "Windows Testing Server"
         asg_name    = "Windows Testing ASG"
-        image       = "ami-6a887b12"
+        image       = "ami-f6d8008e"
         size        = "m3.medium"
         key_name    = "Windoze"
         sgs         = "sg-881718f5"
