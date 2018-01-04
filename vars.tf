@@ -27,8 +27,8 @@ variable "ec2" {
         image       = "ami-f6d8008e"
         size        = "m3.medium"
         key_name    = "Windoze"
-        sgs         = "sg-881718f5"
-        subnet1     = "subnet-b378d3fa"
+        sgs         = "sg-c05905bc"
+        subnet1     = "subnet-af7977f4"
         bootstrap   =<<POWERSHELL_BOOTSTRAP
 <powershell>
 $Password = ConvertTo-SecureString "4NJmXTDPh7EuUVrFQVU3" -AsPlainText -Force
