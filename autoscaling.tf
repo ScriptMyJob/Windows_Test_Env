@@ -40,3 +40,11 @@ resource "aws_autoscaling_group" "windowws_testing" {
         }
     ]
 }
+
+output "id" {
+    value = "${aws_launch_configuration.windows_testing.id}"
+}
+
+output "name" {
+    value = "${aws_launch_configuration.windows_testing.name}"
+}
