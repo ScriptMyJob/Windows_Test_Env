@@ -31,16 +31,27 @@ variable "ec2" {
         subnet1     = "subnet-af7977f4"
         bootstrap   =<<POWERSHELL_BOOTSTRAP
 <powershell>
+# User Configs
 $Password = ConvertTo-SecureString "4NJmXTDPh7EuUVrFQVU3" -AsPlainText -Force
 New-LocalUser "rjackson" -Password $Password
 Add-LocalGroupMember -Group "Administrators" -Member "rjackson"
 
-$url = 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1' 
+# Ansible
+$url = 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'
 $output = "C:\Windows\Temp\ConfigureRemotingForAnsible.ps1"
-
 Invoke-WebRequest -Uri $url -OutFile $output
 
 C:\Windows\Temp\ConfigureRemotingForAnsible.ps1 -CertValidityDays 100
+
+
+# Choco
+Set-ExecutionPolicy Bypass -Scope Process -Force;
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+# vim
+choco install vim -y
+write-output "set swapfile`nset dir=C:\Temp" |
+    Out-File -FilePath "$HOME\.vimrc"
 </powershell>
 POWERSHELL_BOOTSTRAP
 
