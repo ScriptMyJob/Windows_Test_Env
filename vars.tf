@@ -52,6 +52,54 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 choco install vim -y
 write-output "set swapfile`nset dir=C:\Temp" |
     Out-File -FilePath "$HOME\.vimrc"
+
+$PROFILE = 'C:\Users\rjackson\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
+
+if (Test-Path $PROFILE) {
+    Write-Output "Set-Alias ll gci" |
+        Out-File -FilePath "$PROFILE" -Append
+} else {
+    mkdir (Split-Path -Path "$PROFILE") -ErrorAction SilentlyContinue
+
+    Write-Output "Set-Alias ll gci" |
+        Out-File -FilePath "$PROFILE"
+}
+
+function Get-GoogleChrome {
+    if ( -Not (Test-Path C:\temp\)) {
+        mkdir 'C:\temp\'
+    }
+
+    (new-object System.Net.WebClient).DownloadFile(
+        'http://dl.google.com/chrome/install/375.126/chrome_installer.exe',
+        'C:\temp\chrome.exe'
+    );
+}
+
+function Run-GoogleChromeInstaller {
+    $job = Start-Job {
+        C:\temp\chrome.exe /silent /install;
+    };
+    Wait-Job $job;
+}
+
+function Remove-GoogleChromeInstaller {
+    Write-Host "Installing Google Chrome"
+    do {
+        Start-Sleep 1;
+        Write-Host "." -NoNewline
+        Remove-Item C:\temp\chrome.exe -Force -ErrorAction SilentlyContinue;
+    } while ( Test-Path C:\temp\chrome.exe )
+}
+
+function Install-GoogleChrome {
+    Get-GoogleChrome;
+    Run-GoogleChromeInstaller;
+    Remove-GoogleChromeInstaller;
+    Get-Package -Name 'Google Chrome'
+}
+
+Install-GoogleChrome
 </powershell>
 POWERSHELL_BOOTSTRAP
 
